@@ -34,13 +34,13 @@ will fail eval issues designed around that family.
 
 | Check | Evidence | Pass condition | Weight |
 |---|---|---|---|
-| Maintainer is active | repo-facts block: last 5 default-branch commits; issue thread: maintainer first-response sample and comment author associations | Pass if the repo has at least one default-branch commit in the last 90 days and at least one maintainer/owner/member/collaborator response on the issue within 30 days of the capture date, or a comparable human maintainer signal in the thread | required |
+| Maintainer is active | repo-facts block: last 5 default-branch commits; issue thread: maintainer first-response sample and comment author associations | Pass if the repo has at least one human-authored default-branch commit in the last 90 days, or a maintainer/owner/member/collaborator response on the issue within 30 days of the capture date | required |
 
-| Repo is currently used | repo-facts block: latest release, last push to any branch, archived flag, stars | Pass if the repo is not archived, the latest release is within 365 days, and the repo shows recent activity (last push within 180 days) | required |
+| Repo is currently used | repo-facts block: latest release, last push to any branch, archived flag, stars | Pass if the repo is not archived and shows recent activity through a last push within 180 days; if a release exists, it must be within 365 days, but having no published release does not fail an otherwise active repository | required |
 
-| Issue scope fits a newcomer | issue body and comments: bug report / feature ask, acceptance criteria, discussion history, maintainer comments | Pass if the task is a bounded, single-piece change, not a tracking/umbrella issue, not a pure support question, and not explicitly described as requiring core internals or large design churn | required |
+| Issue scope fits a newcomer | issue body and comments: bug report / feature ask, acceptance criteria, discussion history, maintainer comments | Pass if the task is one cohesive change with a settled direction, including a multi-file documentation update with an explicit file list, or a reproducible bug with a specific observed behavior and concrete diagnosis; a maintainer-authored bug with that concrete symptom remains bounded even when it lists several possible implementation suggestions. Fail if it is a tracking/umbrella issue, pure support question, unresolved design investigation, or a task whose discussion or multiple abandoned attempts show that the problem or design remains unsettled | required |
 
-| Nobody else is already on it | issue sidebar and comments: assignees, linked PRs, claim comments, label history | Pass if there is no active assignee, no open linked PR, and no clear public claim such as “I’m working on this” that a maintainer accepted without a later handoff or closure | required |
+| Nobody else is already on it | issue sidebar and comments: assignees, linked PRs, claim comments, label history | Pass if there is no active assignee, no open linked PR, and no current public claim such as “I’m working on this” that a maintainer accepted; closed PRs and stale or explicitly released claims do not block the issue | required |
 
 | Beginner-friendliness is visible | issue labels, comments, or maintainer wording such as “good first issue,” “beginner-friendly,” or an explicit invitation to contribute | Pass if a maintainer clearly signals the issue is suitable for a newcomer, or the work is otherwise narrow and straightforward enough for a first contribution | preferred |
 
