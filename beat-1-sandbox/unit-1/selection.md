@@ -29,12 +29,12 @@ partial re-run costs about $0.20 — or run the skill on different candidates. O
 recording `reject` for the issue you chose earns no credit for this field.
 
 Summary of checks (live mode, re-verified 2026-09-18 against tools/issue-select/rubric.md, no activity on the issue since first pass):
-- Maintainer is active — pass. Last default-branch commit by Aburke225 (human-authored) on Aug 24, 2026, within 90 days; satisfies the check's first branch on its own.
-- Repo is currently used — pass. Not archived; last push Aug 24, 2026 (within 180 days). No release has ever been published, but the check's own wording states that "having no published release does not fail an otherwise active repository."
-- Issue scope fits a newcomer — pass. Reproducible bug with a specific observed behavior (`UnknownHashError` escaping `verify_password` instead of returning `False`) and a concrete diagnosis (catch the exception, un-xfail test H-05); maintainer-authored, one cohesive change, no umbrella/tracking shape.
-- Nobody else is already on it — pass. No assignee, no linked PR, no claim comments (zero comments on the thread).
-- Beginner-friendliness is visible (preferred) — pass. Labels include "good first issue" and "tier-1 (Starter difficulty)".
-- Contribution workflow is allowed (preferred) — pass. `docs/CONTRIBUTING.md` contains no AI-use ban or conditions.
+- Maintainer is active: pass. Last default-branch commit by Aburke225 (human-authored) on Aug 24, 2026, within 90 days, which satisfies the check's first branch on its own.
+- Repo is currently used: pass. Not archived; last push Aug 24, 2026 (within 180 days). No release has ever been published, but the check's own wording states that "having no published release does not fail an otherwise active repository."
+- Issue scope fits a newcomer: pass. Reproducible bug with a specific observed behavior (`UnknownHashError` escaping `verify_password` instead of returning `False`) and a concrete diagnosis (catch the exception, un-xfail test H-05). Maintainer-authored, one cohesive change, no umbrella/tracking shape.
+- Nobody else is already on it: pass. No assignee, no linked PR, no claim comments (zero comments on the thread).
+- Beginner-friendliness is visible (preferred): pass. Labels include "good first issue" and "tier-1 (Starter difficulty)".
+- Contribution workflow is allowed (preferred): pass. `docs/CONTRIBUTING.md` contains no AI-use ban or conditions.
 
 ```
 {
@@ -88,8 +88,8 @@ From `rubric.md`, the "Repo is currently used" row, quoted as currently written:
 > 180 days; if a release exists, it must be within 365 days, but having no published
 > release does not fail an otherwise active repository
 
-Reasoning behind this form: many actively-maintained repos — especially application and
-UI projects rather than libraries — never cut a GitHub Release at all, so treating "no
+Reasoning behind this form: many actively-maintained repos, especially application and
+UI projects rather than libraries, never cut a GitHub Release at all, so treating "no
 release" as an automatic fail would conflate "doesn't use the Releases feature" with
 "abandoned." The check keys primarily on push recency and the archived flag as the
 liveness signal, and only holds release recency to a standard when a release actually
@@ -104,7 +104,7 @@ it has never published a release, producing a false reject against the gold `acc
 trade-off is that the check leans entirely on commit/push activity as its liveness signal
 once a repo has no release history, so it would be fooled by a repo that pushes trivial,
 non-substantive commits (e.g. CI churn) on a schedule without real maintainer engagement
-with issues — a case the "Maintainer is active" check is left to catch instead, via its
+with issues, a case the "Maintainer is active" check is left to catch instead, through its
 own human-authored-commit and response-time conditions.
 
 ---
@@ -117,19 +117,19 @@ This is also the basis for the claim comment you write in Unit 2.
 
 **Selection rationale**
 
-1. This fits my time and interests well: it's a small, well-scoped Python bug fix in
+1. This fits my time and interests well. It's a small, well-scoped Python bug fix in
    `core/security.py` with a 1-2 hour estimate, which matches what I said in my fit
-   profile — I want practice reading existing code and making small, low-risk fixes
+   profile: I want practice reading existing code and making small, low-risk fixes
    rather than taking on a broad redesign or unclear framework work.
 
 2. The verdict correctly confirmed the mechanical signals: the repo is active, the issue
    is unclaimed, and it's a single bounded change rather than a tracking issue. What I
    weighed beyond that is that this is security-sensitive code (password hash
-   verification) — the rubric doesn't grade for how carefully a fix needs to be tested,
+   verification). The rubric doesn't grade for how carefully a fix needs to be tested,
    but I noticed the fix has to preserve "fail closed" behavior exactly, so I'll need to
    write a test for the malformed-hash case, not just silence the exception.
 
-3. I expect low technical difficulty — it's one function and one test file, and the
+3. I expect low technical difficulty. It's one function and one test file, and the
    maintainer (course staff) already named the exact fix and the test to un-xfail. The
    main friction I anticipate is procedural rather than technical: following this
    course's claim and PR process (claiming in a comment, keeping CI green, understanding
