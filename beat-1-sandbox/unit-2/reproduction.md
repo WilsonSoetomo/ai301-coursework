@@ -25,9 +25,54 @@ WilsonSoetomo
 
 https://github.com/codepath/pathreview-ai301-fa26-s1/issues/72#issuecomment-5805076602
 
+> Hi, I'd like to take this on too. I see a few others are already investigating — I'll still reproduce and report independently rather than piggyback on their comments. My plan: confirm that `verify_password` lets `passlib.exc.UnknownHashError` escape when the stored hash isn't a recognizable bcrypt hash, then look at wrapping the `pwd_context.verify` call in `core/security.py` to catch that failure (and check whether other malformed-hash shapes raise a different exception type) and return `False` instead, and drop the `xfail` marker on `test_verify_with_wrong_hash_format` (manifest H-05) once the fix lands.
+
 **Reproduction comment**
 
 https://github.com/codepath/pathreview-ai301-fa26-s1/issues/72#issuecomment-5805079696
+
+> **Environment:** macOS 26.6.2 (arm64), Python 3.11.15, repo at `WilsonSoetomo/pathreview-ai301-fa26-s1` (fork of this repo), commit `f89c06fc3ff292df2a04a39ac51319d32a76b779`. This bug lives entirely in `core/security.py`, and `Settings()` (`core/config.py`) has a default for every field, so no `.env`/Docker stack is needed — just a venv with the relevant deps:
+>
+> ```
+> $ python3.11 -m venv .venv && source .venv/bin/activate
+> $ pip install "passlib[bcrypt]>=1.7.4" "bcrypt>=4.0.1,<5.0.0" "python-jose[cryptography]>=3.3.0" "pydantic[email]>=2.5.0" "pydantic-settings>=2.1.0"
+> ```
+> Installed: passlib 1.7.4, bcrypt 4.3.0, pydantic 2.13.5.
+>
+> **Steps and observed:**
+>
+> Control run (a valid bcrypt hash, to confirm `verify_password` works normally first):
+> ```
+> $ python3 -c "
+> from core.security import verify_password, hash_password
+> h = hash_password('password')
+> print('control (valid hash):', verify_password('password', h))
+> "
+> control (valid hash): True
+> ```
+>
+> The reported trigger — the malformed hash string the repo's own covering test uses:
+> ```
+> $ python3 -c "
+> from core.security import verify_password
+> verify_password('password', 'not_a_valid_bcrypt_hash')
+> "
+> Traceback (most recent call last):
+>   ...
+> passlib.exc.UnknownHashError: hash could not be identified
+> ```
+>
+> Also ran the repo's own covering test directly:
+> ```
+> $ python3 -m pytest tests/unit/test_security.py -k test_verify_with_wrong_hash_format -v
+> tests/unit/test_security.py::TestSecurity::test_verify_with_wrong_hash_format XFAIL
+> ```
+> `XFAIL` matches the `@pytest.mark.xfail(strict=True, reason="issue #72 (manifest H-05): ...")` marker already on that test — the bug is present exactly as the marker describes it, on the same commit the issue was opened against.
+>
+> **Expected:** `verify_password` returns `False` for a hash it cannot identify (fail closed), the same way it returns `False` for a merely wrong password.
+> **Actual:** `passlib.exc.UnknownHashError` propagates out of `verify_password` uncaught, as shown above.
+>
+> One unrelated note for honesty: passlib 1.7.4 against bcrypt 4.3.0 also prints a harmless `(trapped) error reading bcrypt version` warning on every call (a known passlib/bcrypt version-detection quirk). It shows up on both the control and bug runs and has nothing to do with this issue.
 
 ## Eval iterations
 
