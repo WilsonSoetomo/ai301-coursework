@@ -1,4 +1,4 @@
-# Contribution: [Issue Title]
+# Contribution: verify_password raises UnknownHashError instead of returning False
 
 Path: `beat-2-contribution/contribution-story.md`
 
@@ -7,12 +7,11 @@ the repository is not read. **Keep every section header below under its exact na
 format criteria grade exactly that. Your course repo link is the whole submission: no tool
 files and no evidence uploads are part of Assignment 5.
 
-**Contribution Number:** [1]
-**Student:** [Student name]
-**GitHub Username:** [your GitHub username, exactly as it appears on your profile - no @, no
-profile URL. Your comments upstream are identified by this name.]
-**Issue:** [GitHub issue link]
-**Pull Request:** [GitHub PR link, once opened]
+**Contribution Number:** 1
+**Student:** Wilson Soetomo
+**GitHub Username:** WilsonSoetomo
+**Issue:** https://github.com/codepath/pathreview-ai301-fa26-s1/issues/72
+**Pull Request:** [TODO: PR link once opened]
 
 One repository, built across units 5 to 8, telling the whole story of your real
 contribution. Fill it as you work, not at the end — the sections below ask for evidence that
@@ -80,22 +79,16 @@ drafted, what you did with the draft.]
 
 ## Why I Chose This Issue
 
-[1-2 paragraphs in your own words: how you searched, what your scan
-surfaced, what your scout's verdict said, why this issue fits your
-profile, and what you hope to learn. If your scout's verdict on it
-was reject and you chose it anyway, say so here and say why; choosing
-against your own tool silently is what loses points. Close with an
-honest read of the tool itself: where the scout fell short on a real
-wild search and what you changed or would change, or what convinced
-you it held up.]
+I ran my issue-select skill against the open issues on `codepath/pathreview-ai301-fa26-s1` and it accepted #72 on its live re-check on 2026-09-18: the maintainer is active (last human commit Aug 24, 2026), the repo is in use, the scope is one cohesive bug with a concrete diagnosis, and the labels include "good first issue" and "tier-1 (Starter difficulty)". It had no assignee or linked PR when I chose it. It fits me because it is a small, well-bounded security-adjacent fix in one function, with an existing `xfail` test that defines done.
+
+[TODO: a sentence or two on what you hope to learn, and an honest read of where the scout fell short on the wild search.]
 
 **Toolkit**
 
-- Tool: issue-scout (your scout: your search strategy, your rubric),
-  and how you used it
-- What it produced: [the scan and its verdict on this issue, described]
-- Difficulties: [where it fell short, or "none met" if none did]
-- What changed: [what you patched or would update, or "nothing"]
+- Tool: issue-select (`tools/issue-select/`), run in live mode on the candidate issue
+- What it produced: an `accept` verdict for #72 with per-check reasons (see `beat-1-sandbox/unit-1/selection.md`)
+- Difficulties: [TODO]
+- What changed: [TODO]
 
 ---
 
@@ -103,26 +96,26 @@ you it held up.]
 
 **Problem Description**
 
-[In your own words, what is broken or missing?]
+`verify_password` in `core/security.py` passes the stored hash straight to `pwd_context.verify`. When the stored value is not a recognizable bcrypt hash, passlib raises `UnknownHashError` and it escapes to the caller instead of the function returning `False`.
 
 **Expected Behavior**
 
-[What should happen?]
+`verify_password` fails closed: an unidentifiable hash returns `False`, the same as a wrong password.
 
 **Current Behavior**
 
-[What actually happens?]
+`verify_password("password", "not_a_valid_bcrypt_hash")` raises `passlib.exc.UnknownHashError: hash could not be identified`.
 
 **Affected Components**
 
-[Which parts of the codebase are involved?]
+`core/security.py` (`verify_password`) and `tests/unit/test_security.py` (`test_verify_with_wrong_hash_format`, currently `xfail(strict=True)`, manifest H-05).
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: repro-check (`tools/repro-check/`), used to grade my claim and repro comments before posting
+- What it produced: a ready-to-post verdict on both comments
+- Difficulties: [TODO]
+- What changed: [TODO]
 
 ---
 
@@ -130,31 +123,34 @@ you it held up.]
 
 **Environment Setup**
 
-[What a stranger would need to stand this up: your operating system,
-the relevant versions (language, runtime, package manager, the project
-itself), and how you set the project up. Then the challenges you faced
-and how you solved them, or that none came up.]
+macOS 26.6.2 (arm64), Python 3.11.15, fork `WilsonSoetomo/pathreview-ai301-fa26-s1` at commit `f89c06fc3ff292df2a04a39ac51319d32a76b779`. The bug lives entirely in `core/security.py` and `Settings()` defaults every field, so no `.env` or Docker stack is needed:
+
+```
+python3.11 -m venv .venv && source .venv/bin/activate
+pip install "passlib[bcrypt]>=1.7.4" "bcrypt>=4.0.1,<5.0.0" "python-jose[cryptography]>=3.3.0" "pydantic[email]>=2.5.0" "pydantic-settings>=2.1.0"
+```
+
+Installed: passlib 1.7.4, bcrypt 4.3.0, pydantic 2.13.5. Challenge: passlib 1.7.4 with bcrypt 4.3.0 prints a harmless `(trapped) error reading bcrypt version` warning on every call; it is unrelated and appears on control and bug runs alike.
 
 **Steps to Reproduce**
 
-1. [Step 1]
-2. [Step 2]
-3. [Observed result]
+1. Control: `hash_password('password')` then `verify_password('password', h)` returns `True`.
+2. Run `verify_password('password', 'not_a_valid_bcrypt_hash')`.
+3. Observed: `passlib.exc.UnknownHashError: hash could not be identified`.
+4. `python3 -m pytest tests/unit/test_security.py -k test_verify_with_wrong_hash_format -v` reports `XFAIL`, matching the marker on the test.
 
 **Reproduction Evidence**
 
-- **Commit showing reproduction:** [link to commit in your fork]
-- **Screenshots/logs:** [if applicable]
-- **My findings:** [what you discovered during reproduction; an
-  honest, evidenced cannot-reproduce that led you to re-pick or ask
-  the maintainer belongs here and costs you nothing]
+- **Commit showing reproduction:** [TODO: link to a commit in your fork, if you made one]
+- **Screenshots/logs:** full commands and output in my repro comment: https://github.com/codepath/pathreview-ai301-fa26-s1/issues/72#issuecomment-5805079696
+- **My findings:** the bug reproduces exactly as the issue and the `xfail` marker describe, on the commit the issue was opened against.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: repro-check (`tools/repro-check/`)
+- What it produced: an accept on the repro comment (20/20 eval agreement on the skill itself)
+- Difficulties: [TODO]
+- What changed: [TODO]
 
 ---
 
@@ -162,29 +158,26 @@ and how you solved them, or that none came up.]
 
 **Analysis**
 
-[Your analysis of the root cause: what is causing the issue, traced
-to the files and functions involved.]
+`core/security.py:37` returns `bool(pwd_context.verify(plain_password, hashed_password))` with no handling. `CryptContext.verify` raises `UnknownHashError` (and can raise `ValueError` for some malformed shapes) when it cannot identify the hash, so the failure propagates through the function's "True if password matches, False otherwise" contract.
 
 **Proposed Solution**
 
-[High-level description of your fix approach, and what you are
-deliberately NOT changing.]
+Wrap the `pwd_context.verify` call in `verify_password` and return `False` when passlib cannot identify or parse the stored hash. Not changing: `hash_password`, the passlib/bcrypt version pins, or callers of `verify_password`.
 
 **Implementation Plan**
 
-1. [Modify file X to do Y]
-2. [Add or change Z]
-3. [Update tests]
+1. In `core/security.py`, catch `UnknownHashError` (and check whether other malformed-hash inputs raise a different exception type) around `pwd_context.verify` and return `False`.
+2. Remove the `xfail` marker from `test_verify_with_wrong_hash_format` in `tests/unit/test_security.py`.
+3. Re-run the repro steps and the unit tests in `tests/unit/test_security.py`.
 
-[Record deviations here as they happen: what changed mid-build and
-why. A recorded deviation is honest work; silent drift is not.]
+[TODO: record deviations from the plan in `beat-1-sandbox/unit-3/plan.md` as you build.]
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: plan-check (`tools/plan-check/`), run on the plan and plan comment before posting
+- What it produced: [TODO: its verdict on your plan]
+- Difficulties: [TODO]
+- What changed: [TODO]
 
 ---
 
