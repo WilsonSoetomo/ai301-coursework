@@ -54,10 +54,9 @@ happened; these entries are the toolkit's own timeline.
 All four entries are graded. Keep every heading below, and fill each
 one in the week it belongs to.
 
-**Unit 5: [one line on the tool work]**
+**Unit 5: Built the issue-scout on my Unit 1 rubric, with three `gh search issues` queries and five ranking filters**
 
-[2-4 sentences: what you built (the scout, your strategy), what broke
-or fell short, what changed because of it.]
+I installed the scout over my issue-select skill and wrote a search strategy traced to my fit profile: `good first issue` and `help wanted` Python queries plus a docs `good first issue` query, ranked by dropping assigned, stale (60+ days) and 10+ comment issues and then ordering by fewest comments. My first scan (2026-10-14) graded five and accepted only one, WLAN-Pi/wlanpi-fpms#199, because three of the five slots went to one repo created that same day and an empty-body issue tied at the top with zero comments. I added a one-result-per-repository ranking filter, since repo is a free search field, and left empty bodies to the rubric's scope check, which caught that issue correctly; I have not re-scanned to see the new filter work yet. Grading three docs-only issues from StellarCanary/Protocol-Canary showed one more gap that only the rubric can see: all three documented commands whose implementing issues were still open, so it rejected them.
 
 **Unit 6: [one line on the tool work]**
 
