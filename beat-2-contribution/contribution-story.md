@@ -68,13 +68,13 @@ The first ship-gate run on `docs/contributor-quick-start` passed all three manif
 
 **Unit 8: Wrote a flisk playbook from real review times and ran the PR monitor on my merged PR**
 
-I set my staleness threshold at 3 working days: CONTRIBUTING.md promises a reply within one working day, and five recent outside PRs all got a first maintainer touch within 2 hours. The monitor read #1846 as MERGED and drafted a merged follow-up. The draft had two errors I caught by reading the thread: it suggested closing #1842, which the bot had already closed, and it thanked the reviewer for checking the `demo` step, but the approval had no comment. I cut both and kept a two-line thanks in `my-reply.md`. [TODO(Wilson): say whether you posted it or decided not to, and why.]
+I set my staleness threshold at 3 working days: CONTRIBUTING.md promises a reply within one working day, and five recent outside PRs all got a first maintainer touch within 2 hours. The monitor read #1846 as MERGED and drafted a merged follow-up. The draft had two errors I caught by reading the thread: it suggested closing #1842, which the bot had already closed, and it thanked the reviewer for checking the `demo` step, but the approval had no comment. I cut both and kept a two-line thanks in `my-reply.md`, then decided not to post it, so nothing went on the thread.
 
 ---
 
 ## Why I Chose This Issue
 
-[TODO(Wilson): in your own words, say where you found #1842 (Hacktoberfest label, the flisk "good first issue" list, or something else) and why you picked it over the scout's Unit 5 pick, wlanpi-fpms#199.] The issue was labeled `good first issue`, `difficulty: easy` and `rank: 8 kyu`, it listed the exact nine steps and the two candidate files, and it had no assignee or claim when I found it. It fits me because it is a bounded docs change where every claim on the page can be checked by running a command, and because the flisk CONTRIBUTING.md and AGENTS.md welcome AI-assisted contributors. [TODO(Wilson): one or two sentences on what you hoped to learn.]
+I found #1842 by filtering issues on GitHub myself, not through my scout. The issue was labeled `good first issue`, `difficulty: easy` and `rank: 8 kyu`, it listed the exact nine steps and the two candidate files, and it had no assignee or claim when I found it. It fits me because it is a bounded docs change where every claim on the page can be checked by running a command, and because the flisk CONTRIBUTING.md and AGENTS.md welcome AI-assisted contributors. I hoped to learn how contributing to an open source repo actually works from start to finish: claiming an issue, following a project's rules, and getting a PR reviewed by maintainers.
 
 An honest read of the scout: it never graded #1842. Its Unit 5 scan accepted one issue (wlanpi-fpms#199) and its old scope check rejected three docs issues on Protocol-Canary for open edges. My docs query (`--label documentation --label "good first issue"`, no language filter) matches #1842's labels, but the scan ran on 2026-10-14 and #1842 was opened on 2026-10-21, so it didn't exist yet. The scout ran once and never re-scanned. After the Unit 6 scope patch, I'd expect #1842 to pass `scope-feasible` with a "straightforward" difficulty note, but I didn't rerun it because the issue is now closed.
 
@@ -109,9 +109,9 @@ No quick start exists on `main` at `e7b877d4` (`git show main:docs/contributing/
 
 **Toolkit**
 
-- Tool: [TODO(Wilson): how you used Claude Code (or anything else) to read the issue and find the `demo` handling in `cli/src/cli.ts`.]
+- Tool: Claude Code with a skill, used to read the issue and the `demo` code in `cli/src/cli.ts`.
 - What it produced: the pointer to the `templateArg` branch in `cli/src/cli.ts`, confirmed by running `demo --dry-run`.
-- Difficulties: [TODO(Wilson): what was confusing, or "none met".]
+- Difficulties: navigating GitHub was the confusing part for me: finding my way around the issue thread, the labels, the claim bot, and my fork versus the original repo.
 - What changed: the `demo` finding went into the PR as a stated deviation instead of copying the issue's step 7.
 
 ---
@@ -192,7 +192,7 @@ The page is the change, so the test is running every command on it, in order, on
 
 **2026-10-21**
 
-Found #1842 [TODO(Wilson): where]. Posted my claim with a plan (link the page from Quick setup, run every command on a clean checkout first), then "I'll take this", which the issue-claims bot listens for; it assigned me within seconds.
+Found #1842 by filtering GitHub issues. Posted my claim with a plan (link the page from Quick setup, run every command on a clean checkout first), then "I'll take this", which the issue-claims bot listens for; it assigned me within seconds.
 
 **2026-10-21**
 
@@ -210,8 +210,8 @@ Wrote the playbook from five recent merged outside PRs (#3972, #3951, #3943, #39
 
 - Tool: Claude Code, used to draft the page (the PR says "drafted with Claude Code; I ran the commands and reviewed the page").
 - What it produced: the first draft of `docs/contributing/quick-start.md`.
-- Difficulties: [TODO(Wilson): what you had to correct in the draft.]
-- What changed: [TODO(Wilson): what you'd change in how you prompt or check drafts.]
+- Difficulties: none met in the page itself; I didn't change Claude's draft. I ran every command on it and checked its links before opening the PR.
+- What changed: nothing in the page. Looking back, the ship-gate later showed my PR description didn't say which test run its numbers came from, so next time I'll check the description as carefully as the page.
 
 ---
 
@@ -224,7 +224,7 @@ Wrote the playbook from five recent merged outside PRs (#3972, #3951, #3943, #39
 **Maintainer Feedback:**
 
 - 2026-10-21: odykyi approved with no comments and merged as `94fa057` 30 minutes after I opened it; the bot closed #1842 and later announced it shipped in v1.3.205. Later comments asked for a Product Hunt upvote and offered a Founding Contributor badge, which are unrelated to the change.
-- 2026-11-11: [TODO(Wilson): "posted a short thank-you (link)" or "decided not to reply because …"]
+- 2026-11-11: the PR monitor drafted a thank-you; I decided not to post it.
 
 **Status:** Merged
 
@@ -241,15 +241,15 @@ Wrote the playbook from five recent merged outside PRs (#3972, #3951, #3943, #39
 
 **Technical Skills Gained**
 
-[TODO(Wilson) — draft to rewrite:] Reading a CLI's flag handling (`cli/src/cli.ts`) to check what a documented command really does; DCO sign-off with `git commit -s`; using `.git/info/exclude` to keep personal files like `CLAUDE.local.md` and `ship-manifest.md` out of a PR; running a repo's checks in a clean shell (`env -i`) to separate "my environment" failures from "my change" failures; and reading a project's merged PRs to estimate how fast it reviews.
+I learned the full open source workflow: forking a repo, claiming an issue, signing off commits with `git commit -s` for the DCO check, and opening a PR from my fork that says `Fixes #1842`. I learned to check what a command really does by running it and reading its code (`demo` in `cli/src/cli.ts`) before documenting it. I also learned to keep personal files out of a PR with `.git/info/exclude`, to run a project's checks in a clean terminal so my setup doesn't hide problems, and to look at a repo's merged PRs to see how fast its maintainers review.
 
 **Challenges Overcome**
 
-[TODO(Wilson) — draft to rewrite:] The issue told me to document `demo --dry-run`, and running it showed it wasn't a dry run, so I had to decide between copying the issue, fixing the CLI, or documenting what's true. I chose the last option and stated the deviation in the PR. Locally, 4 tests always failed, and I proved they weren't mine by running the suite on `main`.
+Navigating GitHub was the hardest part for me at first: the issue thread, the labels, the claim bot, and keeping my fork and the original repo straight. The biggest technical surprise was that the issue asked me to document `demo --dry-run`, but running it showed it wasn't a dry run at all. Instead of copying the issue or changing the CLI, I documented a safe command (`doctor`) and explained the change in my PR. Four tests also failed on my Mac, and I showed they weren't caused by my change by running them on `main` too.
 
 **What I'd Do Differently Next Time**
 
-[TODO(Wilson) — draft to rewrite:] Set up the voice guard, plan-check and ship-gate before claiming, not after merging, so the tools gate the work instead of describing it afterward. Re-run the scout right before choosing, so the issue I pick is one it graded.
+I'd set up my tools (the voice guard, plan-check and ship-gate) before claiming an issue instead of after my PR merged, so they check the work while it can still change. I'd re-run my scout right before choosing, so the issue I pick is one it graded. And I'd save my raw command output when I run it, so my PR can say exactly which run its numbers come from.
 
 ---
 
