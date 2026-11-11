@@ -64,7 +64,7 @@ I merged my three voice-guide copies into one canonical guide at `~/.claude/voic
 
 **Unit 7: Wrote a three-check ship manifest for flisk and ran the ship-gate on my merged branch**
 
-[TODO(Wilson): after you run the ship-gate, say what it printed on `docs/contributor-quick-start`.] Writing the manifest made me check which flisk checks really pass on macOS: `bun install`, `bun run typecheck` and `bun run lint` pass, but `bun run test` fails with the same 4 tests on `main` and on my branch (Docker/Tilt and the `/var` to `/private/var` symlink), so I moved it to the excluded table with the date and reason instead of deleting it. The gate came after my PR had already merged, so it checked a branch that maintainers had already accepted, which shows what it would have caught but couldn't change anything.
+The first ship-gate run on `docs/contributor-quick-start` passed all three manifest checks, but my pr-precheck rejected it on `claims-match-diff` and `decisive-test-evidence`: my PR text quoted my 2026-10-21 run (2561 passed, 132 packages), while `test_evidence.md` held a 2026-11-11 re-run (2557 passed, 134 installs) and no proof of the sign-off and push steps. I relabeled the evidence into the two dated runs and added the signed-off commit and pushed branch, and the second run said `ship-gate: PASS`. Writing the manifest made me check which flisk checks really pass on macOS: `bun install`, `bun run typecheck` and `bun run lint` pass, but `bun run test` fails with the same 4 tests on `main` and on my branch (Docker/Tilt and the `/var` to `/private/var` symlink), so I moved it to the excluded table with the date and reason instead of deleting it. The gate came after my PR had already merged, so it checked a branch that maintainers had already accepted, which shows what it would have caught but couldn't change anything.
 
 **Unit 8: Wrote a flisk playbook from real review times and ran the PR monitor on my merged PR**
 
@@ -164,9 +164,9 @@ Add `docs/contributing/quick-start.md` with the nine steps, kept to a five-minut
 **Toolkit**
 
 - Tool: plan-check (`~/.claude/skills/plan-check/`, wild scope), run on `plan.md` and `plan-comment.md` in my flisk clone.
-- What it produced: [TODO(Wilson): paste its verdict after running step 6 of the Unit 7 tab.]
+- What it produced: `reject` twice, then `accept`. Run 1 failed `test` ("No automated test added; only manual command run (step 1) and link check (step 4)"). Run 3 passed all three checks: "Docs-only; step 4 re-runs every command on the new page and checks every relative link and the new link resolve, per 03-open-a-pr.md".
 - Difficulties: I wrote the plan after the fix had merged, so plan-check graded a plan against a known-good outcome, which can't catch a wrong direction the way it would before building.
-- What changed: [TODO(Wilson): what you revised in plan.md, or "nothing" if it accepted first time.]
+- What changed: two fixes. In the rubric, the `test` check now accepts, for docs-only changes, a plan that re-runs every command and link, because flisk's `03-open-a-pr.md` asks docs PRs to "Check links and commands you changed", not to add tests. In `plan.md`, step 4 now re-runs the finished page's own commands, including `doctor`, because run 2 showed the plan only ran the issue's commands before writing.
 
 ---
 
@@ -231,9 +231,9 @@ Wrote the playbook from five recent merged outside PRs (#3972, #3951, #3943, #39
 **Toolkit**
 
 - Tool: ship-gate (`~/.claude/ship-gate/check_gate.py --branch`), run by hand on `docs/contributor-quick-start` with my manifest, `plan.md`, `test_evidence.md` and `pr_draft.md`.
-- What it produced: [TODO(Wilson): PASS, or the checks it named.]
+- What it produced: run 1, the three manifest checks ok, then pr-precheck `reject` on `claims-match-diff` and `decisive-test-evidence`; run 2, `ship-gate: PASS` (gate-log, 2026-11-11 15:41). The pass still noted voice-guide problems in my original PR text: "ran every command on the page ... on a clean checkout of `main`" doesn't say which run the numbers come from, and "CI on `main` is green on Linux" wasn't something I re-checked.
 - Difficulties: the ship-gate arrived after my PR merged, so it ran on a shipped branch. The repo-check half needed a fresh-shell command list, which surfaced the 4 macOS test failures.
-- What changed: [TODO(Wilson): any rubric or manifest fix the gate forced.]
+- What changed: no rubric or manifest change. I fixed the evidence instead, splitting `test_evidence.md` into dated Run 1 (2026-10-21, from the PR) and Run 2 (2026-11-11), with the signed-off commit and pushed branch as proof of steps 8-9. Next time I'll save raw output when I run the commands, and say in the PR which run the numbers come from.
 
 ---
 
