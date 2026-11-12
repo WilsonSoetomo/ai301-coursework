@@ -19,7 +19,7 @@ WilsonSoetomo
 
 **Plan comment**
 
-[TODO: permalink of the plan comment once posted on issue #72]
+https://github.com/codepath/pathreview-ai301-fa26-s1/issues/72#issuecomment-6810913787
 
 ---
 
