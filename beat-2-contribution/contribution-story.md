@@ -136,10 +136,10 @@ macOS arm64, Node 25.9.0, Bun 1.4.3, Docker installed but not running, no Tilt. 
 
 **Toolkit**
 
-- Tool: none for this phase. I ran the commands by hand. repro-check was still on its sandbox scope then.
-- What it produced: the step-by-step table that became the PR's Evidence section.
-- Difficulties: repro-check was built for bug reports, and a missing-docs issue has no "bug" to reproduce, so I didn't grade a repro draft.
-- What changed: I swapped repro-check to the wild scope in Unit 6. For docs issues I'd frame the repro as "run every listed command and record what it does."
+- Tool: on 2026-10-21 I ran the commands by hand; repro-check was still on its sandbox scope. On 2026-11-11 I ran repro-check (wild scope) on my real claim comment and a written repro report (`repro-draft.md`).
+- What it produced: on 2026-10-21, the step-by-step table that became the PR's Evidence section. On 2026-11-11 repro-check refused to grade: "Do not grade drafts or packages for an issue your scout never graded", and it found no mention of #1842 in my scout's output. It also confirmed my claim was already posted word for word and the issue was closed, and pointed out that `demo --dry-run` ignoring its flag is a separate bug that could be my next issue.
+- Difficulties: my tools chain together. Because I found #1842 by filtering GitHub myself instead of through my scout, repro-check's scope rule blocked it from grading my repro.
+- What changed: nothing in the repro. Next time I'll run any issue I pick through the scout first, so the rest of my tools can check it. For docs issues I'd frame the repro as "run every listed command and record what it does."
 
 ---
 
